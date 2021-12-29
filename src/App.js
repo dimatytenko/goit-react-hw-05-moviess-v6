@@ -1,7 +1,11 @@
 import { Route, Switch } from "react-router-dom";
+import "./App.css";
+
 import Container from "./components/Container";
 import Appbar from "./components/AppBar";
-import "./App.css";
+import HomePage from "./views/HomePage";
+import MoviesPage from "./views/MoviesPage";
+import MovieDetailsPage from "./views/MovieDetailsPage";
 
 function App() {
   return (
@@ -10,11 +14,15 @@ function App() {
 
       <Switch>
         <Route path="/" exact>
-          <h1>hello</h1>
+          <HomePage />
         </Route>
 
-        <Route path="/movies">
-          <h2>wckwbjckw</h2>
+        <Route path="/movies" exact>
+          <MoviesPage />
+        </Route>
+
+        <Route path="/movies/:movieId">
+          <MovieDetailsPage />
         </Route>
       </Switch>
     </Container>
