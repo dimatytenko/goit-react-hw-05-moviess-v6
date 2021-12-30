@@ -3,19 +3,17 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams, useRouteMatch, Route } from "react-router-dom";
 import moviesAPI from "../../API/movie-api";
 import Cast from "../Cast";
+import Reviews from "../Reviews";
 
 export default function MovieDetailsPage() {
-  const { url } = useRouteMatch();
+  const { url, path } = useRouteMatch();
   const { movieId } = useParams();
   const [film, setFilm] = useState(null);
-  console.log(film);
-  console.log(url);
-
   useEffect(() => {
-    requestMoviesById(movieId);
+    requestFilmById(movieId);
   }, [movieId]);
 
-  const requestMoviesById = async (id) => {
+  const requestFilmById = async (id) => {
     try {
       const response = await moviesAPI.fetchFilmById(id);
 
@@ -55,13 +53,20 @@ export default function MovieDetailsPage() {
               <li>
                 <NavLink to={`${url}/cast`}>Cast</NavLink>
               </li>
+              <li>
+                <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+              </li>
             </ul>
           </div>
         </div>
       )}
       <hr />
-      <Route path={`${url}/cast`}>
+      <Route path={`${path}/cast`}>
         <Cast />
+      </Route>
+
+      <Route path={`${path}/reviews`}>
+        <Reviews />
       </Route>
     </>
   );

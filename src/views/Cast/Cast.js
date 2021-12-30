@@ -1,13 +1,44 @@
 import React from "react";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import moviesAPI from "../../API/movie-api";
 
 export default function Cast() {
-  const { url } = useRouteMatch();
   const { movieId } = useParams();
+  const [actors, setActors] = useState([]);
+
+  useEffect(() => {
+    requestActorsById(movieId);
+  }, [movieId]);
+
+  const requestActorsById = async (id) => {
+    try {
+      const response = await moviesAPI.fetchFilmActorById(id);
+
+      if (response.success === false) {
+        throw new Error(`Error: Not Found`);
+      }
+      setActors(response.cast);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <div>
-      <h1>hello</h1>
-    </div>
+    <>
+      {(actors.length > 0 &&
+        actors.map((actor) => (
+          <ul key={actor.id}>
+            <li>
+              <img
+                src={`https://image.tmdb.org/t/p/w342${actor.profile_path}`}
+                alt={actor.name}
+              ></img>
+
+              <p>{actor.name}</p>
+            </li>
+          </ul>
+        ))) || <p>We don't have any actors</p>}
+    </>
   );
 }

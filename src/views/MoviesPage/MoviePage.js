@@ -6,6 +6,7 @@ import moviesAPI from "../../API/movie-api";
 export default function MoviePage() {
   const { url } = useRouteMatch();
   const [inputValue, setInputValue] = useState("");
+
   const [films, setFilms] = useState(null);
 
   const handleInputChange = (event) => {
@@ -14,7 +15,6 @@ export default function MoviePage() {
   const handleSubmitForm = (event) => {
     event.preventDefault();
     requestMoviesByQuery(inputValue);
-
     reset();
   };
   const reset = () => {
@@ -35,17 +35,20 @@ export default function MoviePage() {
 
   return (
     <div>
-      <form onSubmit={handleSubmitForm}>
-        <input
-          value={inputValue}
-          type="text"
-          placeholder="Search films"
-          onChange={handleInputChange}
-        />
-        <button type="submit">
-          <span>Search</span>
-        </button>
-      </form>
+      <Link to="/movies">
+        <form onSubmit={handleSubmitForm}>
+          <input
+            value={inputValue}
+            type="text"
+            placeholder="Search films"
+            onChange={handleInputChange}
+          />
+          <button type="submit">
+            <span>Search</span>
+          </button>
+        </form>
+      </Link>
+
       <ul>
         {films &&
           films.map((film) => (
