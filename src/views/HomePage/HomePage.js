@@ -51,16 +51,17 @@ export default function HomePage() {
     return (
       <div>
         <h1>Trending today</h1>
-        <ul>
-          {films &&
-            films.map((film) => (
+        {films && (
+          <ul>
+            {films.map((film) => (
               <li key={film.id}>
                 <Link to={`${url}movies/${film.id}`}>
                   {film.original_title || film.name}
                 </Link>
               </li>
             ))}
-        </ul>
+          </ul>
+        )}
       </div>
     );
   }

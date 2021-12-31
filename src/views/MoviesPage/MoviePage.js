@@ -1,24 +1,24 @@
 import { useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
 
 import moviesAPI from "../../API/movie-api";
 
 export default function MoviePage() {
   const { url } = useRouteMatch();
-  const [inputValue, setInputValue] = useState("");
+  const history = useHistory();
+  const location = useLocation();
 
+  const searchQuery = new URLSearchParams(location.search).get("query") ?? "";
+
+  const [inputValue, setInputValue] = useState(searchQuery);
   const [films, setFilms] = useState(null);
 
-  const handleInputChange = (event) => {
-    setInputValue(event.currentTarget.value);
-  };
   const handleSubmitForm = (event) => {
     event.preventDefault();
+    onChangeLocationSearch(inputValue);
+
     requestMoviesByQuery(inputValue);
     reset();
-  };
-  const reset = () => {
-    setInputValue("");
   };
 
   const requestMoviesByQuery = async (query) => {
@@ -33,32 +33,43 @@ export default function MoviePage() {
     }
   };
 
+  const handleInputChange = (event) => {
+    setInputValue(event.currentTarget.value);
+  };
+
+  const reset = () => {
+    setInputValue("");
+  };
+
+  function onChangeLocationSearch(value) {
+    history.push({ ...location, search: `query=${value}` });
+  }
+
   return (
     <div>
-      <Link to="/movies">
-        <form onSubmit={handleSubmitForm}>
-          <input
-            value={inputValue}
-            type="text"
-            placeholder="Search films"
-            onChange={handleInputChange}
-          />
-          <button type="submit">
-            <span>Search</span>
-          </button>
-        </form>
-      </Link>
+      <form onSubmit={handleSubmitForm}>
+        <input
+          value={inputValue}
+          type="text"
+          placeholder="Search films"
+          onChange={handleInputChange}
+        />
+        <button type="submit">
+          <span>Search</span>
+        </button>
+      </form>
 
-      <ul>
-        {films &&
-          films.map((film) => (
+      {films && (
+        <ul>
+          {films.map((film) => (
             <li key={film.id}>
               <Link to={`${url}/${film.id}`}>
                 {film.original_title || film.name}
               </Link>
             </li>
           ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 }

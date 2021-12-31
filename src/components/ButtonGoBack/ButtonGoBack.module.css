@@ -1,0 +1,17 @@
+.button {
+  cursor: pointer;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 5px;
+  margin: 8px;
+  background-color: transparent;
+}
+.buttonText {
+  display: flex;
+  align-items: stretch;
+}
+.buttonText:focus,
+.buttonText:hover {
+  color: red;
+  fill: red;
+}

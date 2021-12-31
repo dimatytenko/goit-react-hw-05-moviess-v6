@@ -5,6 +5,7 @@ import moviesAPI from "../../API/movie-api";
 
 export default function Cast() {
   const { movieId } = useParams();
+
   const [actors, setActors] = useState([]);
 
   useEffect(() => {
@@ -26,19 +27,20 @@ export default function Cast() {
 
   return (
     <>
-      {(actors.length > 0 &&
-        actors.map((actor) => (
-          <ul key={actor.id}>
-            <li>
+      {(actors.length > 0 && (
+        <ul>
+          {actors.map((actor) => (
+            <li key={actor.id}>
               <img
                 src={`https://image.tmdb.org/t/p/w342${actor.profile_path}`}
                 alt={actor.name}
               ></img>
-
               <p>{actor.name}</p>
+              <hr />
             </li>
-          </ul>
-        ))) || <p>We don't have any actors</p>}
+          ))}
+        </ul>
+      )) || <p>We don't have any actors</p>}
     </>
   );
 }

@@ -20,6 +20,24 @@ img {
   height: auto;
 }
 
-button {
-  cursor: pointer;
+h1,
+h2,
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style-type: circle;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #2a363b;
+  font-size: 16px;
+}
+.active {
+  color: red;
 }

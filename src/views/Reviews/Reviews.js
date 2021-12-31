@@ -26,15 +26,17 @@ export default function Reviews() {
   };
   return (
     <>
-      {(views.length > 0 &&
-        views.map((view) => (
-          <ul key={view.id}>
-            <li>
+      {(views.length > 0 && (
+        <ul>
+          {views.map((view) => (
+            <li key={view.id}>
               <h2>Author: {view.author}</h2>
               <p>{view.content}</p>
+              <hr />
             </li>
-          </ul>
-        ))) || <p>We don't have any reviews for this</p>}
+          ))}
+        </ul>
+      )) || <p>We don't have any reviews for this</p>}
     </>
   );
 }
