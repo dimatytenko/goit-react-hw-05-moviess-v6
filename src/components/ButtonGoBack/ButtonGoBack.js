@@ -7,7 +7,7 @@ export default function ButtonGoBack() {
   return (
     <button className={styles.button} type="button">
       <Link className={styles.buttonText} to="/">
-        <ArrowLeft width="20" height="20" />
+        <ArrowLeft width="20" height="15" />
         Go back
       </Link>
     </button>
