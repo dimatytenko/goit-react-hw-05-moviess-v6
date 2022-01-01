@@ -4,9 +4,18 @@ import { useEffect, useState } from "react";
 
 import moviesAPI from "../../API/movie-api";
 
+const STATUS = {
+  IDLE: "idle",
+  PENDING: "pending",
+  REJECTED: "rejected",
+  RESOLVED: "resolved",
+};
+
 export default function Reviews() {
   const { movieId } = useParams();
   const [views, setViews] = useState([]);
+  const [status, setStatus] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     requestReviewsById(movieId);
@@ -16,17 +25,23 @@ export default function Reviews() {
     try {
       const response = await moviesAPI.fetchFilmReview(id);
 
-      if (response.success === false) {
-        throw new Error(`Error: Not Found`);
+      if (response.results.length === 0) {
+        throw new Error(`We don't have any reviews for this`);
       }
+      console.log(response.results);
       setViews(response.results);
+      setStatus(STATUS.RESOLVED);
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+      setStatus(STATUS.REJECTED);
     }
   };
+
   return (
-    <>
-      {(views.length > 0 && (
+    <div>
+      {status === STATUS.REJECTED && <p>{error}</p>}
+
+      {status === STATUS.RESOLVED && (
         <ul>
           {views.map((view) => (
             <li key={view.id}>
@@ -36,7 +51,7 @@ export default function Reviews() {
             </li>
           ))}
         </ul>
-      )) || <p>We don't have any reviews for this</p>}
-    </>
+      )}
+    </div>
   );
 }

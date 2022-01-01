@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 import moviesAPI from "../../API/movie-api";
+
+const STATUS = {
+  IDLE: "idle",
+  PENDING: "pending",
+  REJECTED: "rejected",
+  RESOLVED: "resolved",
+};
 
 export default function MoviePage() {
   const { url } = useRouteMatch();
@@ -12,6 +20,8 @@ export default function MoviePage() {
 
   const [inputValue, setInputValue] = useState(searchQuery);
   const [films, setFilms] = useState(null);
+  const [status, setStatus] = useState(STATUS.IDLE);
+  const [error, setError] = useState(null);
 
   const handleSubmitForm = (event) => {
     event.preventDefault();
@@ -23,13 +33,16 @@ export default function MoviePage() {
 
   const requestMoviesByQuery = async (query) => {
     try {
+      setStatus(STATUS.PENDING);
       const response = await moviesAPI.fetchSearchFilm(query);
       if (response.results.length === 0) {
         throw new Error(`${query} Not Found`);
       }
+      setStatus(STATUS.RESOLVED);
       setFilms(response.results);
     } catch (error) {
-      console.log(error.message);
+      setError(error);
+      setStatus(STATUS.REJECTED);
     }
   };
 
@@ -59,7 +72,21 @@ export default function MoviePage() {
         </button>
       </form>
 
-      {films && (
+      {status === STATUS.IDLE && (
+        <>
+          <p>Movies are displayed here</p>
+        </>
+      )}
+
+      {status === STATUS.REJECTED && (
+        <>
+          <p>{error}</p>
+        </>
+      )}
+
+      {status === STATUS.PENDING && <Loader />}
+
+      {status === STATUS.RESOLVED && films && (
         <ul>
           {films.map((film) => (
             <li key={film.id}>

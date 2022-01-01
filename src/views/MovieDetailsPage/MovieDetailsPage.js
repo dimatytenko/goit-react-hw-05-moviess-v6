@@ -16,12 +16,21 @@ import ButtonGoBack from "../../components/ButtonGoBack";
 const Cast = lazy(() => import("../Cast"));
 const Reviews = lazy(() => import("../Reviews"));
 
+const STATUS = {
+  IDLE: "idle",
+  PENDING: "pending",
+  REJECTED: "rejected",
+  RESOLVED: "resolved",
+};
+
 export default function MovieDetailsPage() {
   const { url, path } = useRouteMatch();
   const { movieId } = useParams();
   const location = useLocation();
   const history = useHistory();
   const [film, setFilm] = useState(null);
+  const [status, setStatus] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     requestFilmById(movieId);
@@ -29,14 +38,17 @@ export default function MovieDetailsPage() {
 
   const requestFilmById = async (id) => {
     try {
+      setStatus(STATUS.PENDING);
       const response = await moviesAPI.fetchFilmById(id);
 
       if (response.success === false) {
         throw new Error(`Error: Not Found`);
       }
       setFilm(response);
+      setStatus(STATUS.RESOLVED);
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+      setStatus(STATUS.REJECTED);
     }
   };
 
@@ -45,7 +57,12 @@ export default function MovieDetailsPage() {
       <ButtonGoBack
         onClick={() => history.push(location?.state?.from?.location ?? "/")}
       />
-      {film && (
+
+      {status === STATUS.PENDING && <Loader />}
+
+      {status === STATUS.REJECTED && <p>{error}</p>}
+
+      {status === STATUS.RESOLVED && (
         <div>
           <div className={styles.box}>
             <div className={styles.img}>
@@ -103,6 +120,7 @@ export default function MovieDetailsPage() {
           <hr />
         </div>
       )}
+
       <Suspense fallback={<Loader />}>
         <Route path={`${path}/cast`}>
           <Cast />

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import moviesAPI from "../../API/movie-api";
-import Loader from "../../components/Loader";
+// import Loader from "../../components/Loader";
 
 const STATUS = {
   IDLE: "idle",
@@ -23,7 +23,6 @@ export default function HomePage() {
 
   const requestMovies = async () => {
     try {
-      setStatus(STATUS.PENDING);
       const response = await moviesAPI.fetchFilmsTrending();
       if (response.success === false) {
         throw new Error(`Error: Not Found`);
@@ -36,16 +35,8 @@ export default function HomePage() {
     }
   };
 
-  if (status === STATUS.PENDING) {
-    return (
-      <>
-        <Loader />
-      </>
-    );
-  }
-
   if (status === STATUS.REJECTED) {
-    return <h1>{error.message}</h1>;
+    return <p>{error.message}</p>;
   }
   if (status === STATUS.RESOLVED) {
     return (

@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./ButtonGoBack.module.css";
 import { ReactComponent as ArrowLeft } from "../../icons/arrow-left.svg";
+import PropTypes from "prop-types";
 
 export default function ButtonGoBack({ onClick }) {
   return (
@@ -10,3 +11,6 @@ export default function ButtonGoBack({ onClick }) {
     </button>
   );
 }
+ButtonGoBack.propTypes = {
+  onClick: PropTypes.func,
+};

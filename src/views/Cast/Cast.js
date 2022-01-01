@@ -3,10 +3,19 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import moviesAPI from "../../API/movie-api";
 
+const STATUS = {
+  IDLE: "idle",
+  PENDING: "pending",
+  REJECTED: "rejected",
+  RESOLVED: "resolved",
+};
+
 export default function Cast() {
   const { movieId } = useParams();
 
   const [actors, setActors] = useState([]);
+  const [status, setStatus] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     requestActorsById(movieId);
@@ -16,18 +25,22 @@ export default function Cast() {
     try {
       const response = await moviesAPI.fetchFilmActorById(id);
 
-      if (response.success === false) {
-        throw new Error(`Error: Not Found`);
+      if (response.cast.length === 0) {
+        throw new Error(`We don't have any actors`);
       }
       setActors(response.cast);
+      setStatus(STATUS.RESOLVED);
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+      setStatus(STATUS.REJECTED);
     }
   };
 
   return (
-    <>
-      {(actors.length > 0 && (
+    <div>
+      {status === STATUS.REJECTED && <p>{error}</p>}
+
+      {status === STATUS.RESOLVED && (
         <ul>
           {actors.map((actor) => (
             <li key={actor.id}>
@@ -40,7 +53,7 @@ export default function Cast() {
             </li>
           ))}
         </ul>
-      )) || <p>We don't have any actors</p>}
-    </>
+      )}
+    </div>
   );
 }
