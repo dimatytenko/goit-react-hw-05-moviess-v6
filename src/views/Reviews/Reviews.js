@@ -3,13 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import moviesAPI from "../../API/movie-api";
-
-const STATUS = {
-  IDLE: "idle",
-  PENDING: "pending",
-  REJECTED: "rejected",
-  RESOLVED: "resolved",
-};
+import STATUS from "../../components/Status";
 
 export default function Reviews() {
   const { movieId } = useParams();
@@ -28,7 +22,6 @@ export default function Reviews() {
       if (response.results.length === 0) {
         throw new Error(`We don't have any reviews for this`);
       }
-      console.log(response.results);
       setViews(response.results);
       setStatus(STATUS.RESOLVED);
     } catch (error) {

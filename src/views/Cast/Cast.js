@@ -2,13 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import moviesAPI from "../../API/movie-api";
-
-const STATUS = {
-  IDLE: "idle",
-  PENDING: "pending",
-  REJECTED: "rejected",
-  RESOLVED: "resolved",
-};
+import STATUS from "../../components/Status";
 
 export default function Cast() {
   const { movieId } = useParams();

@@ -12,16 +12,10 @@ import styles from "./MovieDetailsPage.module.css";
 import moviesAPI from "../../API/movie-api";
 import Loader from "../../components/Loader";
 import ButtonGoBack from "../../components/ButtonGoBack";
+import STATUS from "../../components/Status";
 
 const Cast = lazy(() => import("../Cast"));
 const Reviews = lazy(() => import("../Reviews"));
-
-const STATUS = {
-  IDLE: "idle",
-  PENDING: "pending",
-  REJECTED: "rejected",
-  RESOLVED: "resolved",
-};
 
 export default function MovieDetailsPage() {
   const { url, path } = useRouteMatch();

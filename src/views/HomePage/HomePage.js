@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import moviesAPI from "../../API/movie-api";
-// import Loader from "../../components/Loader";
-
-const STATUS = {
-  IDLE: "idle",
-  PENDING: "pending",
-  REJECTED: "rejected",
-  RESOLVED: "resolved",
-};
+import STATUS from "../../components/Status";
 
 export default function HomePage() {
   const { url } = useRouteMatch();

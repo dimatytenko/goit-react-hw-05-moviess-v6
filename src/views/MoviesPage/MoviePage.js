@@ -3,13 +3,7 @@ import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import Loader from "../../components/Loader";
 
 import moviesAPI from "../../API/movie-api";
-
-const STATUS = {
-  IDLE: "idle",
-  PENDING: "pending",
-  REJECTED: "rejected",
-  RESOLVED: "resolved",
-};
+import STATUS from "../../components/Status";
 
 export default function MoviePage() {
   const { url } = useRouteMatch();
