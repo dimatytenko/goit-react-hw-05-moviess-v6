@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch, useLocation } from "react-router-dom";
 import moviesAPI from "../../API/movie-api";
 import Loader from "../../components/Loader";
 
@@ -12,6 +12,7 @@ const STATUS = {
 
 export default function HomePage() {
   const { url } = useRouteMatch();
+  const location = useLocation();
   const [films, setFilms] = useState(null);
   const [status, setStatus] = useState(STATUS.RESOLVED);
   const [error, setError] = useState(null);
@@ -29,7 +30,6 @@ export default function HomePage() {
       }
       setFilms(response.results);
       setStatus(STATUS.RESOLVED);
-      // console.log(response.results);
     } catch (error) {
       setError(error);
       setStatus(STATUS.REJECTED);
@@ -55,7 +55,16 @@ export default function HomePage() {
           <ul>
             {films.map((film) => (
               <li key={film.id}>
-                <Link to={`${url}movies/${film.id}`}>
+                <Link
+                  to={{
+                    pathname: `${url}movies/${film.id}`,
+                    state: {
+                      from: {
+                        location,
+                      },
+                    },
+                  }}
+                >
                   {film.original_title || film.name}
                 </Link>
               </li>

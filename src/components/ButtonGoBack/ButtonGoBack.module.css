@@ -6,12 +6,8 @@
   margin: 8px;
   background-color: transparent;
 }
-.buttonText {
-  display: flex;
-  align-items: stretch;
-}
-.buttonText:focus,
-.buttonText:hover {
+.button:focus,
+.button:hover {
   color: red;
   fill: red;
 }

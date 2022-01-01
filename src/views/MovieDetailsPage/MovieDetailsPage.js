@@ -1,6 +1,13 @@
 import React from "react";
 import { useEffect, useState, lazy, Suspense } from "react";
-import { NavLink, useParams, useRouteMatch, Route } from "react-router-dom";
+import {
+  NavLink,
+  useParams,
+  useRouteMatch,
+  Route,
+  useLocation,
+  useHistory,
+} from "react-router-dom";
 import styles from "./MovieDetailsPage.module.css";
 import moviesAPI from "../../API/movie-api";
 import Loader from "../../components/Loader";
@@ -12,6 +19,8 @@ const Reviews = lazy(() => import("../Reviews"));
 export default function MovieDetailsPage() {
   const { url, path } = useRouteMatch();
   const { movieId } = useParams();
+  const location = useLocation();
+  const history = useHistory();
   const [film, setFilm] = useState(null);
 
   useEffect(() => {
@@ -33,7 +42,9 @@ export default function MovieDetailsPage() {
 
   return (
     <>
-      <ButtonGoBack />
+      <ButtonGoBack
+        onClick={() => history.push(location?.state?.from?.location ?? "/")}
+      />
       {film && (
         <div>
           <div className={styles.box}>
@@ -60,10 +71,32 @@ export default function MovieDetailsPage() {
             <p>Additional information</p>
             <ul>
               <li>
-                <NavLink to={`${url}/cast`}>Cast</NavLink>
+                <NavLink
+                  to={{
+                    pathname: `${url}/cast`,
+                    state: {
+                      from: {
+                        location: location?.state?.from?.location ?? "/",
+                      },
+                    },
+                  }}
+                >
+                  Cast
+                </NavLink>
               </li>
               <li>
-                <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+                <NavLink
+                  to={{
+                    pathname: `${url}/reviews`,
+                    state: {
+                      from: {
+                        location: location?.state?.from?.location ?? "/",
+                      },
+                    },
+                  }}
+                >
+                  Reviews
+                </NavLink>
               </li>
             </ul>
           </div>
