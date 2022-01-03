@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import Loader from "../../components/Loader";
+import MoviePageForm from "../../components/MoviePageForm";
 
 import moviesAPI from "../../API/movie-api";
 import STATUS from "../../components/Status";
@@ -54,17 +55,11 @@ export default function MoviePage() {
 
   return (
     <div>
-      <form onSubmit={handleSubmitForm}>
-        <input
-          value={inputValue}
-          type="text"
-          placeholder="Search films"
-          onChange={handleInputChange}
-        />
-        <button type="submit">
-          <span>Search</span>
-        </button>
-      </form>
+      <MoviePageForm
+        onSubmit={handleSubmitForm}
+        onChange={handleInputChange}
+        value={inputValue}
+      />
 
       {status === STATUS.IDLE && (
         <>
