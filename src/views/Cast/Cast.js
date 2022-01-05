@@ -43,6 +43,8 @@ export default function Cast() {
                 alt={actor.name}
               ></img>
               <p>{actor.name}</p>
+              <p>Character: {actor.character}</p>
+
               <hr />
             </li>
           ))}
