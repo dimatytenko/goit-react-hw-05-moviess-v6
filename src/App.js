@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import Container from "./components/Container";
@@ -15,23 +15,12 @@ function App() {
       <Appbar />
 
       <Suspense fallback={<Loader />}>
-        <Switch>
-          <Route path="/" exact>
-            <HomePage />
-          </Route>
-
-          <Route path="/movies" exact>
-            <MoviesPage />
-          </Route>
-
-          <Route path="/movies/:movieId">
-            <MovieDetailsPage />
-          </Route>
-
-          <Route>
-            <HomePage />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="movies" element={<MoviesPage />} />
+          <Route path="movies/:movieId/*" element={<MovieDetailsPage />} />
+          <Route path="*" element={<HomePage />} />
+        </Routes>
       </Suspense>
     </Container>
   );

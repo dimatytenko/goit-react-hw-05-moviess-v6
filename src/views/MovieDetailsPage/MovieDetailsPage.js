@@ -3,10 +3,10 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import {
   NavLink,
   useParams,
-  useRouteMatch,
   Route,
   useLocation,
-  useHistory,
+  Routes,
+  useNavigate,
 } from "react-router-dom";
 import styles from "./MovieDetailsPage.module.css";
 import moviesAPI from "../../API/movie-api";
@@ -18,10 +18,11 @@ const Cast = lazy(() => import("../Cast"));
 const Reviews = lazy(() => import("../Reviews"));
 
 export default function MovieDetailsPage() {
-  const { url, path } = useRouteMatch();
   const { movieId } = useParams();
   const location = useLocation();
-  const history = useHistory();
+  console.log(location);
+  const navigate = useNavigate();
+  // console.log(navigate);
   const [film, setFilm] = useState(null);
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
@@ -49,7 +50,7 @@ export default function MovieDetailsPage() {
   return (
     <>
       <ButtonGoBack
-        onClick={() => history.push(location?.state?.from?.location ?? "/")}
+        onClick={() => navigate(location?.state?.from?.location ?? "/")}
       />
 
       {status === STATUS.PENDING && <Loader />}
@@ -84,7 +85,7 @@ export default function MovieDetailsPage() {
               <li>
                 <NavLink
                   to={{
-                    pathname: `${url}/cast`,
+                    pathname: "cast",
                     state: {
                       from: {
                         location: location?.state?.from?.location ?? "/",
@@ -98,7 +99,7 @@ export default function MovieDetailsPage() {
               <li>
                 <NavLink
                   to={{
-                    pathname: `${url}/reviews`,
+                    pathname: "reviews",
                     state: {
                       from: {
                         location: location?.state?.from?.location ?? "/",
@@ -116,13 +117,10 @@ export default function MovieDetailsPage() {
       )}
 
       <Suspense fallback={<Loader />}>
-        <Route path={`${path}/cast`}>
-          <Cast />
-        </Route>
-
-        <Route path={`${path}/reviews`}>
-          <Reviews />
-        </Route>
+        <Routes>
+          <Route path="cast" element={<Cast />} />
+          <Route path="reviews" element={<Reviews />} />
+        </Routes>
       </Suspense>
     </>
   );

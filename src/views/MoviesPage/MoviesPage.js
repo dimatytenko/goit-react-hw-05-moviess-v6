@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Loader from "../../components/Loader";
 import MoviePageForm from "../../components/MoviePageForm";
 
@@ -7,12 +7,10 @@ import moviesAPI from "../../API/movie-api";
 import STATUS from "../../components/Status";
 
 export default function MoviePage() {
-  const { url } = useRouteMatch();
-  const history = useHistory();
+  let navigate = useNavigate();
   const location = useLocation();
-
+  console.log(location);
   const searchQuery = new URLSearchParams(location.search).get("query") ?? "";
-
   const [inputValue, setInputValue] = useState(searchQuery);
   const [films, setFilms] = useState(null);
   const [status, setStatus] = useState(STATUS.IDLE);
@@ -58,7 +56,7 @@ export default function MoviePage() {
   };
 
   function onChangeLocationSearch(value) {
-    history.push({ ...location, search: `query=${value}` });
+    navigate({ ...location, search: `query=${value}` });
   }
 
   return (
@@ -89,12 +87,7 @@ export default function MoviePage() {
             <li key={film.id}>
               <Link
                 to={{
-                  pathname: `${url}/${film.id}`,
-                  state: {
-                    from: {
-                      location,
-                    },
-                  },
+                  pathname: `${film.id}`,
                 }}
               >
                 {film.original_title || film.name}
