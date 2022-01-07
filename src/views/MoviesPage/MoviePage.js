@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import Loader from "../../components/Loader";
 import MoviePageForm from "../../components/MoviePageForm";
@@ -17,6 +17,14 @@ export default function MoviePage() {
   const [films, setFilms] = useState(null);
   const [status, setStatus] = useState(STATUS.IDLE);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (inputValue === "") {
+      return;
+    }
+    requestMoviesByQuery(inputValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmitForm = (event) => {
     event.preventDefault();
