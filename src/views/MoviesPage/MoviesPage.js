@@ -9,7 +9,6 @@ import STATUS from "../../components/Status";
 export default function MoviePage() {
   let navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   const searchQuery = new URLSearchParams(location.search).get("query") ?? "";
   const [inputValue, setInputValue] = useState(searchQuery);
   const [films, setFilms] = useState(null);
@@ -42,7 +41,7 @@ export default function MoviePage() {
       setStatus(STATUS.RESOLVED);
       setFilms(response.results);
     } catch (error) {
-      setError(error);
+      setError(error.message);
       setStatus(STATUS.REJECTED);
     }
   };
@@ -86,8 +85,11 @@ export default function MoviePage() {
           {films.map((film) => (
             <li key={film.id}>
               <Link
-                to={{
-                  pathname: `${film.id}`,
+                to={`${film.id}`}
+                state={{
+                  from: {
+                    location,
+                  },
                 }}
               >
                 {film.original_title || film.name}

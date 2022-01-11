@@ -1,13 +1,10 @@
-import React from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import moviesAPI from "../../API/movie-api";
 import STATUS from "../../components/Status";
 
 export default function Cast() {
   const { movieId } = useParams();
-  const location = useLocation();
-  console.log(location);
 
   const [actors, setActors] = useState([]);
   const [status, setStatus] = useState(null);

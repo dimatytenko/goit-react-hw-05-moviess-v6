@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState, lazy, Suspense } from "react";
 import {
   NavLink,
@@ -18,11 +17,11 @@ const Cast = lazy(() => import("../Cast"));
 const Reviews = lazy(() => import("../Reviews"));
 
 export default function MovieDetailsPage() {
-  const { movieId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   console.log(location);
-  const navigate = useNavigate();
-  // console.log(navigate);
+  const { movieId } = useParams();
+
   const [film, setFilm] = useState(null);
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
@@ -84,13 +83,9 @@ export default function MovieDetailsPage() {
             <ul>
               <li>
                 <NavLink
-                  to={{
-                    pathname: "cast",
-                    state: {
-                      from: {
-                        location: location?.state?.from?.location ?? "/",
-                      },
-                    },
+                  to="cast"
+                  state={{
+                    from: { location: location?.state?.from?.location ?? "/" },
                   }}
                 >
                   Cast
@@ -98,12 +93,10 @@ export default function MovieDetailsPage() {
               </li>
               <li>
                 <NavLink
-                  to={{
-                    pathname: "reviews",
-                    state: {
-                      from: {
-                        location: location?.state?.from?.location ?? "/",
-                      },
+                  to="reviews"
+                  state={{
+                    from: {
+                      location: location?.state?.from?.location ?? "/",
                     },
                   }}
                 >

@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import moviesAPI from "../../API/movie-api";
 import STATUS from "../../components/Status";
 
 export default function HomePage() {
   const location = useLocation();
-  console.log(location);
-  let navigate = useNavigate();
 
   const [films, setFilms] = useState(null);
   const [status, setStatus] = useState(STATUS.RESOLVED);
@@ -42,9 +40,11 @@ export default function HomePage() {
             {films.map((film) => (
               <li key={film.id}>
                 <Link
-                  to={{
-                    pathname: `movies/${film.id}`,
-                    state: location,
+                  to={`movies/${film.id}`}
+                  state={{
+                    from: {
+                      location,
+                    },
                   }}
                 >
                   {film.original_title || film.name}
