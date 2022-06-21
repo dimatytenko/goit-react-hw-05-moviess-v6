@@ -1,15 +1,37 @@
 import { NavLink } from "react-router-dom";
+import { Toolbar, Typography } from "@mui/material";
+import TheatersTwoToneIcon from "@mui/icons-material/TheatersTwoTone";
+import HomeWorkTwoToneIcon from "@mui/icons-material/HomeWorkTwoTone";
+import MovieCreationTwoToneIcon from "@mui/icons-material/MovieCreationTwoTone";
+
 import styles from "./Navigation.module.css";
 
 const Navigation = () => (
-  <nav>
+  <Toolbar>
+    <TheatersTwoToneIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+    <Typography
+      variant="h6"
+      component="div"
+      sx={{
+        flexGrow: 1,
+        display: { xs: "none", sm: "block" },
+      }}
+    >
+      FILMOTEKA
+    </Typography>
     <NavLink to="/" className={styles.link}>
+      <HomeWorkTwoToneIcon
+        sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+      />
       Home
     </NavLink>
     <NavLink to="/movies" className={styles.link}>
+      <MovieCreationTwoToneIcon
+        sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+      />
       Movies
     </NavLink>
-  </nav>
+  </Toolbar>
 );
 
 export default Navigation;

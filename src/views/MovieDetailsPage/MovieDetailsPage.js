@@ -1,20 +1,16 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState } from "react";
 import {
   NavLink,
   useParams,
-  Route,
   useLocation,
-  Routes,
   useNavigate,
+  Outlet,
 } from "react-router-dom";
 import styles from "./MovieDetailsPage.module.css";
 import moviesAPI from "../../API/movie-api";
 import Loader from "../../components/Loader";
 import ButtonGoBack from "../../components/ButtonGoBack";
 import STATUS from "../../components/Status";
-
-const Cast = lazy(() => import("../Cast"));
-const Reviews = lazy(() => import("../Reviews"));
 
 export default function MovieDetailsPage() {
   const navigate = useNavigate();
@@ -85,7 +81,9 @@ export default function MovieDetailsPage() {
                 <NavLink
                   to="cast"
                   state={{
-                    from: { location: location?.state?.from?.location ?? "/" },
+                    from: {
+                      location: location?.state?.from?.location ?? "/",
+                    },
                   }}
                 >
                   Cast
@@ -108,13 +106,7 @@ export default function MovieDetailsPage() {
           <hr />
         </div>
       )}
-
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="cast" element={<Cast />} />
-          <Route path="reviews" element={<Reviews />} />
-        </Routes>
-      </Suspense>
+      <Outlet />
     </>
   );
 }
