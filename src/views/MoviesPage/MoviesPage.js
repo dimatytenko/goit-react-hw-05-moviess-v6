@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import Loader from "../../components/Loader";
-import MoviePageForm from "../../components/MoviePageForm";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import moviesAPI from "../../API/movie-api";
-import STATUS from "../../components/Status";
+import { Status } from "../../constants/constants";
+import { HomePageContainer } from "../HomePage/HomePage.styled";
+import TableFilms from "../../components/TableFilms";
+import Loader from "../../components/Loader";
+import MoviePageForm from "../../components/MoviePageForm";
 
 export default function MoviePage() {
   let navigate = useNavigate();
@@ -12,46 +14,34 @@ export default function MoviePage() {
   const searchQuery = new URLSearchParams(location.search).get("query") ?? "";
   const [inputValue, setInputValue] = useState(searchQuery);
   const [films, setFilms] = useState(null);
-  const [status, setStatus] = useState(STATUS.IDLE);
+  const [status, setStatus] = useState(Status.IDLE);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (inputValue === "") {
       return;
     }
-    requestMoviesByQuery(inputValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleSubmitForm = (event) => {
-    event.preventDefault();
-    onChangeLocationSearch(inputValue);
-
-    requestMoviesByQuery(inputValue);
-    reset();
-  };
-
-  const requestMoviesByQuery = async (query) => {
-    try {
-      setStatus(STATUS.PENDING);
-      const response = await moviesAPI.fetchSearchFilm(query);
-      if (response.results.length === 0) {
-        throw new Error(`${query} Not Found`);
+    const requestMoviesByQuery = async (query) => {
+      try {
+        setStatus(Status.PENDING);
+        const response = await moviesAPI.fetchSearchFilm(query);
+        if (response.results.length === 0) {
+          throw new Error(`${query} Not Found`);
+        }
+        setStatus(Status.RESOLVED);
+        setFilms(response.results);
+      } catch (error) {
+        setError(error.message);
+        setStatus(Status.REJECTED);
       }
-      setStatus(STATUS.RESOLVED);
-      setFilms(response.results);
-    } catch (error) {
-      setError(error.message);
-      setStatus(STATUS.REJECTED);
-    }
-  };
+    };
+    requestMoviesByQuery(inputValue);
+    onChangeLocationSearch(inputValue);
+  }, [inputValue]);
 
-  const handleInputChange = (event) => {
-    setInputValue(event.currentTarget.value);
-  };
-
-  const reset = () => {
-    setInputValue("");
+  const handleSubmitForm = ({ search }) => {
+    console.log(search);
+    setInputValue(search);
   };
 
   function onChangeLocationSearch(value) {
@@ -59,45 +49,24 @@ export default function MoviePage() {
   }
 
   return (
-    <div>
-      <MoviePageForm
-        onSubmit={handleSubmitForm}
-        onChange={handleInputChange}
-        value={inputValue}
-      />
+    <HomePageContainer>
+      <MoviePageForm onSubmit={handleSubmitForm} />
 
-      {status === STATUS.IDLE && (
+      {status === Status.IDLE && (
         <>
           <p>Movies are displayed here</p>
         </>
       )}
 
-      {status === STATUS.REJECTED && (
+      {status === Status.REJECTED && (
         <>
           <p>{error}</p>
         </>
       )}
 
-      {status === STATUS.PENDING && <Loader />}
+      {status === Status.PENDING && <Loader />}
 
-      {status === STATUS.RESOLVED && films && (
-        <ul>
-          {films.map((film) => (
-            <li key={film.id}>
-              <Link
-                to={`${film.id}`}
-                state={{
-                  from: {
-                    location,
-                  },
-                }}
-              >
-                {film.original_title || film.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+      {status === Status.RESOLVED && films && <TableFilms films={films} />}
+    </HomePageContainer>
   );
 }

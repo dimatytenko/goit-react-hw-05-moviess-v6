@@ -8,7 +8,7 @@ import styles from "./Navigation.module.css";
 
 const Navigation = () => (
   <Toolbar>
-    <TheatersTwoToneIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+    <TheatersTwoToneIcon sx={{ display: { xs: "none", sm: "flex" }, mr: 1 }} />
     <Typography
       variant="h6"
       component="div"
@@ -20,15 +20,11 @@ const Navigation = () => (
       FILMOTEKA
     </Typography>
     <NavLink to="/" className={styles.link}>
-      <HomeWorkTwoToneIcon
-        sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-      />
+      <HomeWorkTwoToneIcon sx={{ display: "flex" }} />
       Home
     </NavLink>
     <NavLink to="/movies" className={styles.link}>
-      <MovieCreationTwoToneIcon
-        sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-      />
+      <MovieCreationTwoToneIcon sx={{ display: "flex" }} />
       Movies
     </NavLink>
   </Toolbar>

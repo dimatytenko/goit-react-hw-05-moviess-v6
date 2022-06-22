@@ -1,11 +1,11 @@
 import Spinner from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
-import React, { Component } from "react";
+import { LoaderBox } from "./Loader.styled";
 
-class Loader extends Component {
-  render() {
-    return (
+const Loader = () => {
+  return (
+    <LoaderBox>
       <Spinner
         type="CradleLoader"
         color="#00BFFF"
@@ -13,8 +13,8 @@ class Loader extends Component {
         width={320}
         timeout={5000} //3 secs
       />
-    );
-  }
-}
+    </LoaderBox>
+  );
+};
 
 export default Loader;

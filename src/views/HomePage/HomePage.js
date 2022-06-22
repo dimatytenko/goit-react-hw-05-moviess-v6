@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+
 import moviesAPI from "../../API/movie-api";
-import STATUS from "../../components/Status";
+import { Title, HomePageContainer } from "./HomePage.styled";
+import { Status } from "../../constants/constants";
+import Loader from "../../components/Loader";
+import TableFilms from "../../components/TableFilms";
 
 export default function HomePage() {
-  const location = useLocation();
-
   const [films, setFilms] = useState(null);
-  const [status, setStatus] = useState(STATUS.RESOLVED);
+  const [status, setStatus] = useState(Status.PENDING);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -21,39 +22,25 @@ export default function HomePage() {
         throw new Error(`Error: Not Found`);
       }
       setFilms(response.results);
-      setStatus(STATUS.RESOLVED);
+      setStatus(Status.RESOLVED);
     } catch (error) {
       setError(error);
-      setStatus(STATUS.REJECTED);
+      setStatus(Status.REJECTED);
     }
   };
 
-  if (status === STATUS.REJECTED) {
-    return <p>{error.message}</p>;
-  }
-  if (status === STATUS.RESOLVED) {
-    return (
-      <div>
-        <h1>Trending today</h1>
-        {films && (
-          <ul>
-            {films.map((film) => (
-              <li key={film.id}>
-                <Link
-                  to={`movies/${film.id}`}
-                  state={{
-                    from: {
-                      location,
-                    },
-                  }}
-                >
-                  {film.original_title || film.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    );
-  }
+  return (
+    <HomePageContainer>
+      {status === Status.PENDING && <Loader />}
+
+      {status === Status.REJECTED && <p>{error.message}</p>}
+
+      {status === Status.RESOLVED && (
+        <>
+          <Title>Trending today</Title>
+          {films && <TableFilms path={"movies"} films={films} />}
+        </>
+      )}
+    </HomePageContainer>
+  );
 }

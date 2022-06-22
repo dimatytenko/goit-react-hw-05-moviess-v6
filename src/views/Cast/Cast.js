@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 import moviesAPI from "../../API/movie-api";
-import STATUS from "../../components/Status";
+import { Status } from "../../constants/constants";
 
 export default function Cast() {
   const { movieId } = useParams();
@@ -22,18 +23,18 @@ export default function Cast() {
         throw new Error(`We don't have any actors`);
       }
       setActors(response.cast);
-      setStatus(STATUS.RESOLVED);
+      setStatus(Status.RESOLVED);
     } catch (error) {
       setError(error.message);
-      setStatus(STATUS.REJECTED);
+      setStatus(Status.REJECTED);
     }
   };
 
   return (
-    <div>
-      {status === STATUS.REJECTED && <p>{error}</p>}
+    <>
+      {status === Status.REJECTED && <p>{error}</p>}
 
-      {status === STATUS.RESOLVED && (
+      {status === Status.RESOLVED && (
         <ul>
           {actors.map((actor) => (
             <li key={actor.id}>
@@ -49,6 +50,6 @@ export default function Cast() {
           ))}
         </ul>
       )}
-    </div>
+    </>
   );
 }

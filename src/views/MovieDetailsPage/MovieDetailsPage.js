@@ -6,16 +6,17 @@ import {
   useNavigate,
   Outlet,
 } from "react-router-dom";
+import TurnLeftTwoToneIcon from "@mui/icons-material/TurnLeftTwoTone";
+
 import styles from "./MovieDetailsPage.module.css";
 import moviesAPI from "../../API/movie-api";
+import { HomePageContainer } from "../HomePage/HomePage.styled";
 import Loader from "../../components/Loader";
-import ButtonGoBack from "../../components/ButtonGoBack";
-import STATUS from "../../components/Status";
+import { Status } from "../../constants/constants";
 
 export default function MovieDetailsPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   const { movieId } = useParams();
 
   const [film, setFilm] = useState(null);
@@ -23,36 +24,36 @@ export default function MovieDetailsPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const requestFilmById = async (id) => {
+      try {
+        setStatus(Status.PENDING);
+        const response = await moviesAPI.fetchFilmById(id);
+
+        if (response.success === false) {
+          throw new Error(`Error: Not Found`);
+        }
+        setFilm(response);
+        setStatus(Status.RESOLVED);
+      } catch (error) {
+        setError(error.message);
+        setStatus(Status.REJECTED);
+      }
+    };
     requestFilmById(movieId);
   }, [movieId]);
 
-  const requestFilmById = async (id) => {
-    try {
-      setStatus(STATUS.PENDING);
-      const response = await moviesAPI.fetchFilmById(id);
-
-      if (response.success === false) {
-        throw new Error(`Error: Not Found`);
-      }
-      setFilm(response);
-      setStatus(STATUS.RESOLVED);
-    } catch (error) {
-      setError(error.message);
-      setStatus(STATUS.REJECTED);
-    }
-  };
-
   return (
-    <>
-      <ButtonGoBack
+    <HomePageContainer>
+      <TurnLeftTwoToneIcon
+        sx={{ cursor: "pointer" }}
         onClick={() => navigate(location?.state?.from?.location ?? "/")}
       />
 
-      {status === STATUS.PENDING && <Loader />}
+      {status === Status.PENDING && <Loader />}
 
-      {status === STATUS.REJECTED && <p>{error}</p>}
+      {status === Status.REJECTED && <p>{error}</p>}
 
-      {status === STATUS.RESOLVED && (
+      {status === Status.RESOLVED && (
         <div>
           <div className={styles.box}>
             <div className={styles.img}>
@@ -107,6 +108,6 @@ export default function MovieDetailsPage() {
         </div>
       )}
       <Outlet />
-    </>
+    </HomePageContainer>
   );
 }

@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 
 import Layout from "./views/Layout";
 import Loader from "./components/Loader";
@@ -15,7 +14,7 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<HomePage />} />
+          <Route index element={<HomePage />} />
           <Route path="movies" element={<MoviesPage />} />
           <Route path="movies/:movieId" element={<MovieDetailsPage />}>
             <Route path="cast" element={<Cast />} />

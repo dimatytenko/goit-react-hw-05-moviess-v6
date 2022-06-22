@@ -29,7 +29,7 @@ h3 {
 
 ul,
 ol {
-  list-style-type: circle;
+  list-style-type: none;
 }
 
 a {

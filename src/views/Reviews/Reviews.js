@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import moviesAPI from "../../API/movie-api";
-import STATUS from "../../components/Status";
+import { Status } from "../../constants/constants";
 
 export default function Reviews() {
   const { movieId } = useParams();
@@ -23,18 +23,18 @@ export default function Reviews() {
         throw new Error(`We don't have any reviews for this`);
       }
       setViews(response.results);
-      setStatus(STATUS.RESOLVED);
+      setStatus(Status.RESOLVED);
     } catch (error) {
       setError(error.message);
-      setStatus(STATUS.REJECTED);
+      setStatus(Status.REJECTED);
     }
   };
 
   return (
-    <div>
-      {status === STATUS.REJECTED && <p>{error}</p>}
+    <>
+      {status === Status.REJECTED && <p>{error}</p>}
 
-      {status === STATUS.RESOLVED && (
+      {status === Status.RESOLVED && (
         <ul>
           {views.map((view) => (
             <li key={view.id}>
@@ -45,6 +45,6 @@ export default function Reviews() {
           ))}
         </ul>
       )}
-    </div>
+    </>
   );
 }
