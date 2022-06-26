@@ -21,9 +21,9 @@ export default function MoviePageForm({ onSubmit }) {
           value={formik.values.search}
           onChange={formik.handleChange}
           type="text"
-          id="outlined-textarea"
+          id="outlined-basic"
           label="Search films"
-          multiline
+          variant="outlined"
         />
 
         <IconButton type="submit" sx={{ p: "10px" }}>

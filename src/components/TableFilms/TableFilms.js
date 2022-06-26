@@ -13,7 +13,7 @@ export default function TableFilms({ films, path }) {
   const location = useLocation();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, mt: 2 }}>
       <Grid
         container
         columnSpacing={2}
