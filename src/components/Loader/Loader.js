@@ -11,7 +11,7 @@ const Loader = () => {
         color="#00BFFF"
         height={300}
         width={320}
-        timeout={5000} //3 secs
+        timeout={5000}
       />
     </LoaderBox>
   );

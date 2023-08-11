@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import { Formik, Field, Form } from "formik";
 import { useFormik } from "formik";
 
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { MoviePageContainer } from "./MoviePageForm.styled";
 
 export default function MoviePageForm({ onSubmit }) {
   const formik = useFormik({
@@ -16,19 +16,22 @@ export default function MoviePageForm({ onSubmit }) {
   return (
     <>
       <form onSubmit={formik.handleSubmit}>
-        <TextField
-          name="search"
-          value={formik.values.search}
-          onChange={formik.handleChange}
-          type="text"
-          id="outlined-basic"
-          label="Search films"
-          variant="outlined"
-        />
+        <MoviePageContainer>
+          <TextField
+            name="search"
+            value={formik.values.search}
+            onChange={formik.handleChange}
+            type="text"
+            id="outlined-basic"
+            label="Search films"
+            variant="outlined"
+            size="large"
+          />
 
-        <IconButton type="submit" sx={{ p: "10px" }}>
-          <SearchIcon />
-        </IconButton>
+          <IconButton type="submit" sx={{ p: "10px" }}>
+            <SearchIcon />
+          </IconButton>
+        </MoviePageContainer>
       </form>
     </>
   );

@@ -1,10 +1,9 @@
-import { NavLink } from "react-router-dom";
 import { Toolbar, Typography } from "@mui/material";
 import TheatersTwoToneIcon from "@mui/icons-material/TheatersTwoTone";
 import HomeWorkTwoToneIcon from "@mui/icons-material/HomeWorkTwoTone";
 import MovieCreationTwoToneIcon from "@mui/icons-material/MovieCreationTwoTone";
 
-import styles from "./Navigation.module.css";
+import { StyledLink } from "./Navigation.styled";
 
 const Navigation = () => (
   <Toolbar>
@@ -19,14 +18,14 @@ const Navigation = () => (
     >
       FILMOTEKA
     </Typography>
-    <NavLink to="/" className={styles.link}>
+    <StyledLink to="/">
       <HomeWorkTwoToneIcon sx={{ display: "flex" }} />
       Home
-    </NavLink>
-    <NavLink to="/movies" className={styles.link}>
+    </StyledLink>
+    <StyledLink to="/movies">
       <MovieCreationTwoToneIcon sx={{ display: "flex" }} />
       Movies
-    </NavLink>
+    </StyledLink>
   </Toolbar>
 );
 

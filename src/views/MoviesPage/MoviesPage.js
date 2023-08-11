@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 import moviesAPI from "../../API/movie-api";
 import { Status } from "../../constants/constants";
@@ -7,6 +8,7 @@ import { HomePageContainer } from "../HomePage/HomePage.styled";
 import TableFilms from "../../components/TableFilms";
 import Loader from "../../components/Loader";
 import MoviePageForm from "../../components/MoviePageForm";
+import { StyledEmpty } from "./MoviePage.styled";
 
 export default function MoviePage() {
   let navigate = useNavigate();
@@ -40,7 +42,6 @@ export default function MoviePage() {
   }, [inputValue]);
 
   const handleSubmitForm = ({ search }) => {
-    console.log(search);
     setInputValue(search);
   };
 
@@ -53,9 +54,17 @@ export default function MoviePage() {
       <MoviePageForm onSubmit={handleSubmitForm} />
 
       {status === Status.IDLE && (
-        <>
-          <p>Movies are displayed here</p>
-        </>
+        <StyledEmpty>
+          <hr />
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+            component="div"
+            textAlign={"center"}
+          >
+            Movies are displayed here
+          </Typography>
+        </StyledEmpty>
       )}
 
       {status === Status.REJECTED && (

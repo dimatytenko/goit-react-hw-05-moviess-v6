@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import {
-  NavLink,
-  useParams,
-  useLocation,
-  useNavigate,
-  Outlet,
-} from "react-router-dom";
+import { useParams, useLocation, useNavigate, Outlet } from "react-router-dom";
 import TurnLeftTwoToneIcon from "@mui/icons-material/TurnLeftTwoTone";
 
-import styles from "./MovieDetailsPage.module.css";
 import moviesAPI from "../../API/movie-api";
-import { HomePageContainer } from "../HomePage/HomePage.styled";
 import Loader from "../../components/Loader";
 import { Status } from "../../constants/constants";
+import {
+  MoviePageContainer,
+  BackButton,
+  StyledNavLink,
+  StyledLinkWrapper,
+  MovieDetailsContainer,
+  ImageWrapper,
+} from "./MovieDetailsPage.styled";
 
 export default function MovieDetailsPage() {
   const navigate = useNavigate();
@@ -39,15 +39,18 @@ export default function MovieDetailsPage() {
         setStatus(Status.REJECTED);
       }
     };
+
     requestFilmById(movieId);
   }, [movieId]);
 
   return (
-    <HomePageContainer>
-      <TurnLeftTwoToneIcon
-        sx={{ cursor: "pointer" }}
+    <MoviePageContainer>
+      <BackButton
         onClick={() => navigate(location?.state?.from?.location ?? "/")}
-      />
+      >
+        <TurnLeftTwoToneIcon sx={{ cursor: "pointer" }} />
+        <h3>Back</h3>
+      </BackButton>
 
       {status === Status.PENDING && <Loader />}
 
@@ -55,13 +58,13 @@ export default function MovieDetailsPage() {
 
       {status === Status.RESOLVED && (
         <div>
-          <div className={styles.box}>
-            <div className={styles.img}>
+          <MovieDetailsContainer>
+            <ImageWrapper>
               <img
                 src={`https://image.tmdb.org/t/p/w342${film.poster_path}`}
                 alt={film.tagline}
               />
-            </div>
+            </ImageWrapper>
             <div>
               <h2>{film.title}</h2>
               <h3>Overview</h3>
@@ -73,13 +76,13 @@ export default function MovieDetailsPage() {
                 ))}
               </ul>
             </div>
-          </div>
+          </MovieDetailsContainer>
           <div>
             <hr />
             <p>Additional information</p>
-            <ul>
+            <StyledLinkWrapper>
               <li>
-                <NavLink
+                <StyledNavLink
                   to="cast"
                   state={{
                     from: {
@@ -88,10 +91,10 @@ export default function MovieDetailsPage() {
                   }}
                 >
                   Cast
-                </NavLink>
+                </StyledNavLink>
               </li>
               <li>
-                <NavLink
+                <StyledNavLink
                   to="reviews"
                   state={{
                     from: {
@@ -100,14 +103,14 @@ export default function MovieDetailsPage() {
                   }}
                 >
                   Reviews
-                </NavLink>
+                </StyledNavLink>
               </li>
-            </ul>
+            </StyledLinkWrapper>
           </div>
           <hr />
         </div>
       )}
       <Outlet />
-    </HomePageContainer>
+    </MoviePageContainer>
   );
 }
